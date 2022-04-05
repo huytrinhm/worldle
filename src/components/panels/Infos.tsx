@@ -17,6 +17,10 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
     <Panel title="How to play" isOpen={isOpen} close={close}>
       <div className="space-y-3 text-justify border-b-2 border-gray-200 pb-3 mb-3">
         <div>
+          This is a fork of <Worldle /> which allows practice mode and optional
+          territory setting.
+        </div>
+        <div>
           Guess the <Worldle /> in 6 guesses.
         </div>
         <div>Each guess must be a valid country, territory, ...</div>
@@ -130,6 +134,24 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
           Made by{" "}
           <a
             className="underline"
+            href="https://huytrinhm.me"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @huytrinhm
+          </a>{" "}
+          - (
+          <a
+            className="underline"
+            href="https://github.com/huytrinhm/worldle/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            source code
+          </a>
+          ) forked from{" "}
+          <a
+            className="underline"
             href="https://twitter.com/teuteuf"
             target="_blank"
             rel="noopener noreferrer"
@@ -146,20 +168,6 @@ export function Infos({ isOpen, close, settingsData }: InfosProps) {
             source code
           </a>
           )
-        </div>
-        <div>
-          Want to support?{" "}
-          <a
-            className="underline"
-            href="https://www.ko-fi.com/teuteuf"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Twemoji
-              text="Buy me a coffee! ☕"
-              options={{ className: "inline-block" }}
-            />
-          </a>
         </div>
       </div>
     </Panel>

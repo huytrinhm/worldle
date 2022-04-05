@@ -7,6 +7,7 @@ export interface SettingsData {
   theme: "light" | "dark";
   shiftDayCount: number;
   allowShiftingDay: boolean;
+  countryListOnly: boolean;
 }
 
 const defaultSettingsData: SettingsData = {
@@ -18,6 +19,7 @@ const defaultSettingsData: SettingsData = {
     : "light",
   shiftDayCount: 0,
   allowShiftingDay: false,
+  countryListOnly: false,
 };
 
 function loadSettings(): SettingsData {

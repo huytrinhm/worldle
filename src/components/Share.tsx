@@ -36,11 +36,14 @@ export function Share({
     const win = guesses[guesses.length - 1]?.distance === 0;
     const bestDistance = Math.min(...guesses.map(({ distance }) => distance));
     const guessCount = win ? guesses.length : "X";
-    const dayCount = Math.floor(
-      Interval.fromDateTimes(START_DATE, DateTime.fromISO(dayString)).length(
-        "day"
-      )
-    );
+    const dayCount = dayString.includes("-")
+      ? Math.floor(
+          Interval.fromDateTimes(
+            START_DATE,
+            DateTime.fromISO(dayString)
+          ).length("day")
+        )
+      : 0;
     const difficultyModifierEmoji = hideImageMode
       ? " 🙈"
       : rotationMode
@@ -60,7 +63,9 @@ export function Share({
       })
       .join("\n");
 
-    return [title, guessString, "https://worldle.teuteuf.fr"].join("\n");
+    return [title, guessString, "https://huytrinhm.github.io/worldle"].join(
+      "\n"
+    );
   }, [dayString, guesses, hideImageMode, rotationMode, theme]);
 
   return (

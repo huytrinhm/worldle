@@ -21,3 +21,19 @@ export function saveGuesses(dayString: string, guesses: Guess[]): void {
     })
   );
 }
+
+export function loadAllPracticeGuesses(): Record<string, Guess[]> {
+  const storedGuesses = localStorage.getItem("practiceGuesses");
+  return storedGuesses != null ? JSON.parse(storedGuesses) : {};
+}
+
+export function savePracticeGuesses(dayString: string, guesses: Guess[]): void {
+  const allGuesses = loadAllPracticeGuesses();
+  localStorage.setItem(
+    "practiceGuesses",
+    JSON.stringify({
+      ...allGuesses,
+      [dayString]: guesses,
+    })
+  );
+}

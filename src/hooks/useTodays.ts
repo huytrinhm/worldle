@@ -70,12 +70,16 @@ export function useTodays(dayString: string): [
     const radianAngle = (normalizedAngle * Math.PI) / 180;
     return 1 / (Math.cos(radianAngle) * Math.sqrt(2));
   }, [randomAngle]);
-
   return [todays, addGuess, randomAngle, imageScale];
 }
 
 function getCountry(dayString: string) {
   const currentDayDate = DateTime.fromFormat(dayString, "yyyy-MM-dd");
+  if (currentDayDate.invalidReason) {
+    return countriesWithImage[
+      Math.floor(seedrandom.alea(dayString)() * countriesWithImage.length)
+    ];
+  }
   let pickingDate = DateTime.fromFormat("2022-03-21", "yyyy-MM-dd");
   let smallCountryCooldown = 0;
   let pickedCountry: Country | null = null;

@@ -97,6 +97,19 @@ export function Settings({
             {t("settings.rotationMode")}
           </label>
         </div>
+        <div className="flex p-1">
+          <input
+            type="checkbox"
+            id="setting-countryListOnly"
+            checked={settingsData.countryListOnly}
+            onChange={(e) =>
+              updateSettings({ countryListOnly: e.target.checked })
+            }
+          />
+          <label className="flex-1 ml-2" htmlFor="setting-countryListOnly">
+            Only use UN recognized countries (no territories included).
+          </label>
+        </div>
       </div>
       {debugEnabled && (
         <div className="my-4">

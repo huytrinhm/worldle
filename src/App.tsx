@@ -1,42 +1,34 @@
 import { ToastContainer, Flip, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Game } from "./components/Game";
-import React, { useEffect, useMemo, useState } from "react";
+import { Practice } from "./components/Practice";
+import React, { useEffect, useState } from "react";
 import { Infos } from "./components/panels/Infos";
 import { useTranslation } from "react-i18next";
-import { InfosFr } from "./components/panels/InfosFr";
 import { Settings } from "./components/panels/Settings";
 import { useSettings } from "./hooks/useSettings";
-import { Worldle } from "./components/Worldle";
 import { Stats } from "./components/panels/Stats";
 import { useReactPWAInstall } from "@teuteuf/react-pwa-install";
 import { InstallButton } from "./components/InstallButton";
 import { Twemoji } from "@teuteuf/react-emoji-render";
-import { getDayString, useTodays } from "./hooks/useTodays";
 import {
   LocalStoragePersistenceService,
   ServiceWorkerUpdaterProps,
   withServiceWorkerUpdater,
 } from "@3m1/service-worker-updater";
 
-const supportLink: Record<string, string> = {
-  UA: "https://donate.redcrossredcrescent.org/ua/donate/~my-donation?_cv=1",
-};
-
 function App({
   newServiceWorkerDetected,
   onLoadNewServiceWorkerAccept,
 }: ServiceWorkerUpdaterProps) {
-  const { t, i18n } = useTranslation();
-
-  const dayString = useMemo(getDayString, []);
-  const [{ country }] = useTodays(dayString);
+  const { t } = useTranslation();
 
   const { pwaInstall, supported, isInstalled } = useReactPWAInstall();
 
   const [infoOpen, setInfoOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [statsOpen, setStatsOpen] = useState(false);
+  const [practiceOpen, setPracticeOpen] = useState(false);
 
   const [settingsData, updateSettings] = useSettings();
 
@@ -70,19 +62,11 @@ function App({
         autoClose={2000}
         bodyClassName="font-bold text-center"
       />
-      {i18n.resolvedLanguage === "fr" ? (
-        <InfosFr
-          isOpen={infoOpen}
-          close={() => setInfoOpen(false)}
-          settingsData={settingsData}
-        />
-      ) : (
-        <Infos
-          isOpen={infoOpen}
-          close={() => setInfoOpen(false)}
-          settingsData={settingsData}
-        />
-      )}
+      <Infos
+        isOpen={infoOpen}
+        close={() => setInfoOpen(false)}
+        settingsData={settingsData}
+      />
       <Settings
         isOpen={settingsOpen}
         close={() => setSettingsOpen(false)}
@@ -110,6 +94,24 @@ function App({
             <h1 className="text-4xl font-bold uppercase tracking-wide text-center my-1 flex-auto">
               Wor<span className="text-green-600">l</span>dle
             </h1>
+            {!practiceOpen ? (
+              <button
+                className="ml-3 text-xl"
+                type="button"
+                onClick={() => setPracticeOpen(true)}
+              >
+                <Twemoji text="💪" />
+              </button>
+            ) : (
+              <button
+                className="ml-3 text-xl"
+                type="button"
+                onClick={() => setPracticeOpen(false)}
+              >
+                <Twemoji text="📅" />
+              </button>
+            )}
+
             <button
               className="ml-3 text-xl"
               type="button"
@@ -125,37 +127,31 @@ function App({
               <Twemoji text="⚙️" />
             </button>
           </header>
-          <Game settingsData={settingsData} updateSettings={updateSettings} />
+          {!practiceOpen ? (
+            <Game settingsData={settingsData} updateSettings={updateSettings} />
+          ) : (
+            <Practice
+              settingsData={settingsData}
+              updateSettings={updateSettings}
+            />
+          )}
           <footer className="flex justify-center items-center text-sm mt-8 mb-1">
+            <p className="mr-1">
+              Made by{" "}
+              <a
+                className="underline"
+                href="https://huytrinhm.me"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                huytrinhm
+              </a>{" "}
+              with
+            </p>
             <Twemoji
               text="❤️"
               className="flex items-center justify-center mr-1"
-            />{" "}
-            <Worldle />? -
-            {country && supportLink[country.code] != null ? (
-              <a
-                className="underline pl-1"
-                href={supportLink[country.code]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className="w-max">{t(`support.${country.code}`)}</div>
-              </a>
-            ) : (
-              <a
-                className="underline pl-1"
-                href="https://www.ko-fi.com/teuteuf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className="w-max">
-                  <Twemoji
-                    text={t("buyMeACoffee")}
-                    options={{ className: "inline-block" }}
-                  />
-                </div>
-              </a>
-            )}
+            />
           </footer>
         </div>
       </div>
